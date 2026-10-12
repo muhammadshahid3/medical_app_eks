@@ -1,0 +1,48 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Frontend/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push frontend image
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          TAG=${GITHUB_SHA::7}
+          docker build -t $REGISTRY/medical-frontend:$TAG ./Frontend
+          docker push $REGISTRY/medical-frontend:$TAG
+
+      - name: Update frontend tag in k8s and push
+        run: |
+          TAG=${GITHUB_SHA::7}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          sed -i "/name: medical-frontend/,/newTag:/ s/newTag: .*/newTag: $TAG/" k8s/kustomization.yaml
+          git add k8s/kustomization.yaml
+          git commit -m "ci: frontend $TAG [skip ci]" || exit 0
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            sleep 5
+          done
