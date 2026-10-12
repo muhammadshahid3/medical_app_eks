@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -14,28 +14,28 @@ spec:
       labels:
         app: backend
     spec:
-      enableServiceLinks: false
-      initContainers:
-        - name: wait-for-mysql
-          image: busybox:1.36
-          command:
-            - sh
-            - -c
-            - until nc -z mysql 3306; do echo "waiting for mysql..."; sleep 3; done
       containers:
         - name: backend
-          image: shahiddevops1/medicalapp-backend
-          imagePullPolicy: IfNotPresent
+          image: 552496640917.dkr.ecr.ap-south-1.amazonaws.com/medical-backend
+          # asli ECR URL kustomization.yaml ke images section se aata hai
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               name: http
+          env:
+            # Terraform ka banaya secret (RDS endpoint + user + password)
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: rds-conn
+                  key: connection-string
           envFrom:
             - secretRef:
-                name: mysql-secret
+                name: backend-secret
           readinessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 5
             failureThreshold: 20
           resources:
