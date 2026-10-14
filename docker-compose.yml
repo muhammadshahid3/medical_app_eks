@@ -17,7 +17,7 @@ services:
       retries: 10
 
   backend:
-    build: ./Backend
+    image: shahiddevops1/medicalapp-backend:43b0363e7bada1e2cf1d942ebcc9252f34d2e2d4 # <-- 'image' kiya aur space khatam ki
     container_name: medical-backend
     restart: unless-stopped
     depends_on:
@@ -32,7 +32,7 @@ services:
       - "8080:8080"
 
   frontend:
-    build: ./Frontend
+    image: shahiddevops1/medicalapp-frontend:43b0363e7bada1e2cf1d942ebcc9252f34d2e2d4 # <-- 'image' kiya
     container_name: medical-frontend
     restart: unless-stopped
     depends_on:
