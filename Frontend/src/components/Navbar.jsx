@@ -13,7 +13,7 @@ export default function Navbar() {
       <div className="navbar-inner">
         <Link to="/" className="brand">
           <span className="brand-icon">+</span>
-          <span>MediBook</span>
+          <span>MediBook shahid</span>
         </Link>
 
         {onLanding && !user && (

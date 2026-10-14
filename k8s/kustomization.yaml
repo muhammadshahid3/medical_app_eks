@@ -21,7 +21,7 @@ labels:
 images:
   - name: medical-backend
     newName: shahiddevops1/medicalapp-backend
-    newTag: latest
+    newTag: 4c8a719bf5320f0c87117e0e383163d486e7aaf8
   - name: medical-frontend
     newName: shahiddevops1/medicalapp-frontend
-    newTag: latest
+    newTag: 4c8a719bf5320f0c87117e0e383163d486e7aaf8
