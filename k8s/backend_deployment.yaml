@@ -27,7 +27,7 @@ spec:
             - name: ConnectionStrings__DefaultConnection
               valueFrom:
                 secretKeyRef:
-                  name: rds-conn
+                  name: backend-secret
                   key: connection-string
           envFrom:
             - secretRef:
