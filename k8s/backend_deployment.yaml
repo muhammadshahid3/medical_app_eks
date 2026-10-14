@@ -27,7 +27,7 @@ spec:
             - name: ConnectionStrings__DefaultConnection
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret
+                  name: rds-conn
                   key: connection-string
           envFrom:
             - secretRef:
@@ -35,7 +35,7 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 11
+            initialDelaySeconds: 10
             periodSeconds: 5
             failureThreshold: 20
           resources:
