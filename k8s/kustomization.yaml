@@ -20,8 +20,8 @@ labels:
 # (terraform output ecr_backend_repository_url se poora URL mil jata hai)
 images:
   - name: medical-backend
-    newName: 552496640917.dkr.ecr.ap-south-1.amazonaws.com/medical-backend
+    newName: shahiddevops1/medicalapp-backend
     newTag: latest
   - name: medical-frontend
-    newName: 552496640917.dkr.ecr.ap-south-1.amazonaws.com/medical-frontend
+    newName: shahiddevops1/medicalapp-frontend
     newTag: latest

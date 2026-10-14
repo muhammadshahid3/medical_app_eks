@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 552496640917.dkr.ecr.ap-south-1.amazonaws.com/medical-frontend
+          image:  shahiddevops1/medicalapp-frontend
           # asli ECR URL kustomization.yaml ke images section se aata hai
           imagePullPolicy: Always
           ports:
